@@ -17,14 +17,21 @@ EXIT_SUCCESS=0
 EXIT_FAILURE=1
 
 ################################################################################
-# The functions
+# THE FUNCTIONS
 ################################################################################
 
 ################################################################################
-# is_true:		check pseudo-boolean values
-# Usage:		is_true [value]
-# Arguments:	value: pseudo-boolean value to check
-# Returns:		true (rc = 0) if the value equals true
+# is_true
+#	check pseudo-boolean values
+#
+# Usage:
+#	is_true [value]
+#
+# Arguments:
+#	value: pseudo-boolean value to check
+#
+# Returns:
+#	true (rc = 0) if the value equals true
 #
 is_true()
 {
@@ -39,10 +46,17 @@ is_true()
 }
 
 ################################################################################
-# check_rc:		checks a programs return code for success for failure
-# Usage:		check_rc [rc]
-# Arguments:	rc: return code of a command
-# Returns:		true (rc = 0) for a successful return code.
+# check_rc
+#	checks a programs return code for success for failure
+#
+# Usage:
+#	check_rc [rc]
+#
+# Arguments:
+#	rc: return code of a command
+#
+# Returns:
+#	true (rc = 0) for a successful return code.
 #
 check_rc()
 {
@@ -57,10 +71,17 @@ check_rc()
 }
 
 ################################################################################
-# is_decimal:	Determines if a value is decimal
-# Usage:		is_decimal [value]
-# Arguments:	value: the value to check
-# Returns:		true (rc = 0) for a decimal value
+# is_decimal
+#	Determines if a value is decimal
+#
+# Usage:
+#	is_decimal [value]
+#
+# Arguments:
+#	value: the value to check
+#
+# Returns:
+#	true (rc = 0) for a decimal value
 #
 is_decimal()
 {
@@ -75,10 +96,17 @@ is_decimal()
 }
 
 ################################################################################
-# is_decimal:	Determines if a value is hex
-# Usage:		is_hex [value]
-# Arguments:	value: the value to check
-# Returns:		true (rc = 0) for a hex value
+# is_decimal
+#	Determines if a value is hex
+#
+# Usage:
+#	is_hex [value]
+#
+# Arguments:
+#	value: the value to check
+#
+# Returns:
+#	true (rc = 0) for a hex value
 #
 is_hex()
 {
@@ -93,10 +121,17 @@ is_hex()
 }
 
 ################################################################################
-# is_octal:	Determines if a value is hex
-# Usage:		is_hex [value]
-# Arguments:	value: the value to check
-# Returns:		true (rc = 0) for a hex value
+# is_octal
+#	Determines if a value is hex
+#
+# Usage:
+#	is_hex [value]
+#
+# Arguments:
+#	value: the value to check
+#
+# Returns:
+#	true (rc = 0) for a hex value
 #
 is_octal()
 {
@@ -111,14 +146,19 @@ is_octal()
 }
 
 ################################################################################
-# log:			Logs a message to stdout or stderr
-# Usage:		log [level] [message]
-# Arguments:	level: the log level may be err, info or debug.
-#					   err means the message is logged to stder(&2)
-#					   info means the message is logged to stdout(&1)
-#					   debug means the message if only logged to stdout(&1)
-#				       if LIB_VERBOSE is set to a true value.
-#				message: the message to log
+# log
+#	Logs a message to stdout or stderr
+#
+# Usage:
+#	log [level] [message]
+#
+# Arguments:
+#	level: the log level may be err, info or debug.
+#		err means the message is logged to stder(&2)
+#		info means the message is logged to stdout(&1)
+#		debug means the message if only logged to stdout(&1)
+#		if LIB_VERBOSE is set to a true value.
+#	message: the message to log
 #
 log()
 {
@@ -144,11 +184,16 @@ log()
 }
 
 ################################################################################
-# log_syslog:	Logs a message to syslog
-#				As log tag it takes $0 which means the name of the
-#				script executing log_syslog.
-# Usage:		log_syslog [message]
-# Arguments:	message: The message which should be logged
+# log_syslog
+#	Logs a message to syslog
+#	As log tag it takes $0 which means the name of the
+#	script executing log_syslog.
+#
+# Usage:
+#	log_syslog [message]
+#
+# Arguments:
+#	message: The message which should be logged
 #
 log_syslog()
 {
@@ -159,10 +204,15 @@ log_syslog()
 }
 
 ################################################################################
-# die:			Logs a message and exits the program with a defined exit code
-# Usage:		die [rc] [message]
-# Arguments:	rc: the exit code to exit the program with
-#				message: the message to log to stderr(&2)
+# die
+#	Logs a message and exits the program with a defined exit code
+#
+# Usage:
+#	die [rc] [message]
+#
+# Arguments:
+#	rc: the exit code to exit the program with
+#	message: the message to log to stderr(&2)
 #
 die()
 {
@@ -180,10 +230,15 @@ die()
 }
 
 ################################################################################
-# exec_or_die:	Executes a command and exits the program if the command failed
-# Usage:		exec_or_die [command args ...]
-# Arguments:	command args ...: the command with its arguments to execute.
-#								  does not have to be quoted.
+# exec_or_die
+#	Executes a command and exits the program if the command failed
+#
+# Usage:
+#	exec_or_die [command args ...]
+#
+# Arguments:
+#	command args ...: the command with its arguments to execute.
+#		Does not have to be quoted.
 #
 exec_or_die()
 {
@@ -203,10 +258,34 @@ exec_or_die()
 }
 
 ################################################################################
-# array_push:	Pushes a value to an array
-# Usage:		array_push [array] [value]
-# Arguments:	array: the array where the values should be pushed to
-#				value: the value that should be pushed
+# ARRAY HELPER FUNCTIONS
+#
+# PLEASE NOTE:
+#
+# These array functions take use of 'eval'. That means that the arguments
+# which repesent the array and vars where data shuold be written to
+# have to be written WITHOUT the '$'.
+#
+# EXAMPLE:
+#
+# myarray=()
+# array_push myarray "first element"
+# foovar=
+# array_get_first myarray foovar
+# echo $foovar
+#
+################################################################################
+
+################################################################################
+# array_push
+#	Pushes a value to an array
+#
+# Usage:
+#	array_push [array] [value]
+#
+# Arguments:
+#	array: the array where the values should be pushed to
+#	value: the value that should be pushed
 #
 array_push()
 {
@@ -219,11 +298,16 @@ array_push()
 }
 
 ################################################################################
-# array_get:	Gets an value from an array an sets it to a var
-# Usage:		array_get [array] [destination] [index]
-# Arguments:	array: the array
-#				destination: the destination var
-#				indext: the index of the var in the array
+# array_get
+#	Gets an value from an array an sets it to a var
+#
+# Usage:
+#	array_get [array] [destination] [index]
+#
+# Arguments:
+#	array: the array
+#	destination: the destination var
+#	indext: the index of the var in the array
 #
 array_get()
 {
@@ -235,10 +319,15 @@ array_get()
 }
 
 ################################################################################
-# array_get_first:	Gets the first element of an array
-# Usage:			array_get_first [array] [destination]
-# Arguments:		array: the array where to get the value from
-#					value: the value that should be pushed
+# array_get_first
+#	Gets the first element of an array
+#
+# Usage:
+#	array_get_first [array] [destination]
+#
+# Arguments:
+#	array: the array where to get the value from
+#	value: the value that should be pushed
 #
 array_get_first()
 {
@@ -249,10 +338,15 @@ array_get_first()
 }
 
 ################################################################################
-# array_get_last:	Gets the last element of an array
-# Usage:			array_get_last [array] [destination]
-# Arguments:		array: the array where to get the value from
-#					value: the value that should be pushed
+# array_get_last
+#	Gets the last element of an array
+#
+# Usage:
+#	array_get_last [array] [destination]
+#
+# Arguments:
+#	array: the array where to get the value from
+#	value: the value that should be pushed
 #
 array_get_last()
 {
@@ -263,10 +357,15 @@ array_get_last()
 }
 
 ################################################################################
-# array_copy:	Copies an array to another
-# Usage:		array_copy [array] [destination]
-# Arguments:	array: the source array
-#				destination: the destination array
+# array_copy
+#	Copies an array to another
+#
+# Usage:
+#	array_copy [array] [destination]
+#
+# Arguments:
+#	array: the source array
+#	destination: the destination array
 #
 array_copy()
 {
@@ -277,11 +376,16 @@ array_copy()
 }
 
 ################################################################################
-# array_set:	Sets the value of an array
-# Usage:		array_set [array] [index] [value]
-# Arguments:	array: the array
-#				index: the index of the element
-#				value: the value that should be set
+# array_set
+#	Sets the value of an array
+#
+# Usage:
+#	array_set [array] [index] [value]
+#
+# Arguments:
+#	array: the array
+#	index: the index of the element
+#	value: the value that should be set
 
 array_set()
 {
@@ -293,11 +397,15 @@ array_set()
 }
 
 ################################################################################
-# array_reset:	Resets an array to zero or to the defined elements
-# Usage:		array_reset [array] {[values] ...}
-# Arguments:	array: the array that sould be resetted
-#				values...: optional values with which the array should
-#						   be re-initialized
+# array_reset
+#	Resets an array to zero or to the defined elements
+#
+# Usage:
+#	array_reset [array] {[values] ...}
+#
+# Arguments:
+#	array: the array that sould be resetted
+#	values...: optional values with which the array should be re-initialized
 #
 array_reset()
 {
