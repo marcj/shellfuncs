@@ -5,7 +5,7 @@
 PATH=/usr/bin:/usr/sbin:/bin:/sbin
 
 #
-# Activates of deactivates verbosity of some functions in here.
+# Activates or deactivates verbosity of some functions in here.
 #
 : ${LIB_VERBOSE:=0}
 
@@ -263,7 +263,7 @@ exec_or_die()
 # PLEASE NOTE:
 #
 # These array functions take use of 'eval'. That means that the arguments
-# which repesent the array and vars where data shuold be written to
+# which repesent the array and vars where data should be written to
 # have to be written WITHOUT the '$'.
 #
 # EXAMPLE:
