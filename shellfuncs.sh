@@ -10,6 +10,30 @@ PATH=/usr/bin:/usr/sbin:/bin:/sbin
 : ${LIB_VERBOSE:=0}
 
 ################################################################################
+# INTERNAL FUNCTIONS
+# Not supposed to be used externally
+################################################################################
+
+################################################################################
+# _debug
+#	internal debug helper function
+#
+# $0 is the name of the script executing a function here
+# ${BASH_LINENO[1]} is the line number where the function was called
+# ${FUNCNAME[2]} is the function name from where another function was called
+# ${FUNCNAME[1]} is the function name which called us (_debug)
+#
+# EXAMPLE OUTPUT:
+# test.sh +6 [foo]: check_pid: Argument is not a pid
+#
+_debug()
+{
+	local msg="$1"
+
+	echo "$0 +${BASH_LINENO[1]} [${FUNCNAME[2]}]: ${FUNCNAME[1]}: $msg" >&2
+}
+
+################################################################################
 # Default return codes as in stdlibc
 ################################################################################
 
@@ -217,7 +241,7 @@ log_syslog()
 die()
 {
 	if [ $# -lt 2 ]; then
-		log err "die: not enough arguments"
+		_debug "die: not enough arguments"
 	fi
 
 	local rc="$1"
@@ -255,6 +279,52 @@ exec_or_die()
         else
                 return $rc
         fi
+}
+
+################################################################################
+# check_pid
+#	Checks a pid for existance
+#
+# Usage:
+#	check_pid [pid]
+#
+# Arguments:
+#	pid: the pid to check
+#
+# Returns:
+#	true (rc = 0) if the pid exists (= the program is running)
+#
+check_pid()
+{
+	local pid="$1"
+
+	if ! is_decimal $pid; then
+		_debug "Argument is not a pid"
+	fi
+
+	kill -0 $pid > /dev/null 2>&1
+}
+
+################################################################################
+# vargrep
+#	Greps in string variables
+#
+# Usage:
+#	vargrep [var] [pattern]
+#
+# Arguments:
+#	var: a variable which contains strings. Remember to quote("") the var
+#	pattern: the search pattern. May be a regex
+#
+# Returns:
+#	true (rc = 0) if the pattern matches
+#
+vargrep()
+{
+	local var="$1"
+	local pattern="$2"
+
+	echo "$var" | grep -q -E "$pattern"
 }
 
 ################################################################################
