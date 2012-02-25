@@ -1,6 +1,8 @@
 Some useful bash functions
+==========================
 
 Currently implemented:
+======================
 
 `is_true`
 -------
