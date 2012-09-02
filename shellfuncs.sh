@@ -120,7 +120,7 @@ is_decimal()
 }
 
 ################################################################################
-# is_decimal
+# is_hex
 #	Determines if a value is hex
 #
 # Usage:
